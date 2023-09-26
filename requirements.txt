@@ -1,0 +1,6 @@
+weaviate-client
+langchain
+pydantic
+openai
+tiktoken
+google-search-results
