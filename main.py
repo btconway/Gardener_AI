@@ -405,37 +405,40 @@ st.title("Alan Titchmarsh")
 for msg in st.session_state.chat_history:
     st.chat_message(msg["role"]).write(msg["content"])
 
-def parse_ai_response(response_dict):
-    logging.info("Response Data: %s", response_dict)
-    # Check if response_dict is a string and a valid JSON string; if so, convert it to a dictionary
-    if isinstance(response_dict, str):
-        try:
-            response_dict = json.loads(response_dict)
-        except json.JSONDecodeError:
-            # Handle the error if the string is not a valid JSON
-            return "Invalid JSON response"
-
-    # Extract the AI's response from the response dictionary
-    ai_response = response_dict.get("AI", "")
+def parse_ai_response(response_data):
+    logging.info("Response Data: %s", response_data)
     
-    # If the AI's response is not found, extract the text between "AI": " and "
-    if not ai_response:
-        match = re.search(r'"AI": "(.*?)"', response_dict)
-        if match:
-            ai_response = match.group(1)
+    # If response_data is a string, try to parse it as JSON
+    if isinstance(response_data, str):
+        try:
+            response_dict = json.loads(response_data)
+        except json.JSONDecodeError:
+            # If the string is not a valid JSON, return the original response_data
+            return response_data
 
-    # Extract the actual response after "Observation: "
-    observation_index = ai_response.find("Observation: ")
-    if observation_index != -1:
-        ai_response = ai_response[observation_index + len("Observation: "):]
-    else:
-        ai_response = "Observation not found in response."
+        # Extract the AI's response from the response dictionary
+        ai_response = response_dict.get("AI", "")
+        
+        # If the AI's response is not found, extract the text between "AI": " and "
+        if not ai_response:
+            match = re.search(r'"AI": "(.*?)"', response_data)
+            if match:
+                ai_response = match.group(1)
 
-    # Remove any leading or trailing whitespace
-    ai_response = ai_response.strip()
+        # Extract the actual response after "Observation: "
+        observation_index = ai_response.find("Observation: ")
+        if observation_index != -1:
+            ai_response = ai_response[observation_index + len("Observation: "):]
+        else:
+            ai_response = "Observation not found in response."
 
-    return ai_response
+        # Remove any leading or trailing whitespace
+        ai_response = ai_response.strip()
 
+        return ai_response
+
+    # If response_data is not a string, return an error message
+    return "Invalid input type"
 def is_json(myjson):
     try:
         json_object = json.loads(myjson)
