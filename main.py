@@ -406,7 +406,7 @@ for msg in st.session_state.chat_history:
     st.chat_message(msg["role"]).write(msg["content"])
 
 def parse_ai_response(response_dict):
-    logging.info("Response Data:", response_dict)
+    logging.info("Response Data: %s", response_dict)
     # Check if response_dict is a string and a valid JSON string; if so, convert it to a dictionary
     if isinstance(response_dict, str):
         try:
@@ -414,9 +414,6 @@ def parse_ai_response(response_dict):
         except json.JSONDecodeError:
             # Handle the error if the string is not a valid JSON
             return "Invalid JSON response"
-
-    # Now, you can safely use the get method
-    ai_response = response_dict.get("AI", "")
 
     # Extract the AI's response from the response dictionary
     ai_response = response_dict.get("AI", "")
