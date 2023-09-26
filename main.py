@@ -407,12 +407,15 @@ for msg in st.session_state.chat_history:
 
 def parse_ai_response(response_dict):
     # Check if response_dict is a string and a valid JSON string; if so, convert it to a dictionary
-    if isinstance(response_dict, str) and is_json(response_dict):
-        response_dict = json.loads(response_dict)
+    if isinstance(response_dict, str):
+        try:
+            response_dict = json.loads(response_dict)
+        except json.JSONDecodeError:
+            # Handle the error if the string is not a valid JSON
+            return "Invalid JSON response"
 
-    # If the response is not a JSON string
-    if "Non-JSON Response" in response_dict:
-        return response_dict["Non-JSON Response"]
+    # Now, you can safely use the get method
+    ai_response = response_dict.get("AI", "")
 
     # Extract the AI's response from the response dictionary
     ai_response = response_dict.get("AI", "")
@@ -459,12 +462,3 @@ if prompt := st.chat_input():
 
         st.write(ai_response)
         st.session_state.chat_history.append({"role": "assistant", "content": ai_response})  # Add AI response to chat history
-
-
-
-
-
-
-
-
-
