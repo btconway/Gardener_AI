@@ -421,15 +421,24 @@ def convert_to_json(data):
 def parse_ai_response(response_data):
     logging.info("Response Data: %s", response_data)
     
-    # Convert the response_data to a JSON object
-    response_dict = convert_to_json(response_data)
+    # If response_data is a string, try to parse it as JSON
+    if isinstance(response_data, str):
+        try:
+            response_dict = json.loads(response_data)
+        except json.JSONDecodeError:
+            # If the string is not a valid JSON, return the original response_data
+            return response_data
+    elif isinstance(response_data, dict):
+        response_dict = response_data
+    else:
+        return "Invalid input type"
 
     # Extract the AI's response from the response dictionary
     ai_response = response_dict.get("AI", "")
         
     # If the AI's response is not found, extract the text between "AI": " and "
-    if not ai_response:
-        match = re.search(r'"AI": "(.*?)"', response_data)
+    if not ai_response and isinstance(response_dict, str):
+        match = re.search(r'"AI": "(.*?)"', response_dict)
         if match:
             ai_response = match.group(1)
 
@@ -444,6 +453,7 @@ def parse_ai_response(response_data):
     ai_response = ai_response.strip()
 
     return ai_response
+
 
 def is_json(myjson):
     try:
