@@ -466,9 +466,9 @@ def is_json(myjson):
     return True
 
 if prompt := st.chat_input():
-    st.chat_message("Gardener", avatar="👨‍🌾🌱").write(prompt)
+    st.chat_message("Gardener").write(prompt)
     st.session_state.chat_history.append({"role": "user", "content": prompt})  # Add user message to chat history
-    with st.chat_message("AI", avatar = "🤖🥬"):
+    with st.chat_message("AI", avatar = "3_JMR_BRI_110222trb_01.jpeg"):
         st_callback = StreamlitCallbackHandler(st.container())
         # Convert the chat history into a format that chain.run() can handle
         chat_history_str = "\n".join([f"{msg['role']}: {msg['content']}" for msg in st.session_state.chat_history])
