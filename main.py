@@ -433,6 +433,10 @@ def parse_ai_response(response_data):
     else:
         return "Invalid input type"
 
+    # Check if the response contains the "Non-JSON Response" key
+    if "Non-JSON Response" in response_dict:
+        return response_dict["Non-JSON Response"]
+
     # Extract the AI's response from the response dictionary
     ai_response = response_dict.get("AI", "")
         
@@ -453,7 +457,6 @@ def parse_ai_response(response_data):
     ai_response = ai_response.strip()
 
     return ai_response
-
 
 def is_json(myjson):
     try:
