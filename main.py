@@ -405,7 +405,11 @@ st.title("Alan Titchmarsh")
 for msg in st.session_state.chat_history:
     st.chat_message(msg["role"]).write(msg["content"])
 
+print("Response Data:", response_dict)
+
+
 def parse_ai_response(response_dict):
+    print("Response Data:", response_dict)
     # Check if response_dict is a string and a valid JSON string; if so, convert it to a dictionary
     if isinstance(response_dict, str):
         try:
