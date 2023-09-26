@@ -400,7 +400,7 @@ if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
 # Streamlit interaction
-st.title("Alan Titchmarsh")
+st.title("Your AI Gardener")
 
 for msg in st.session_state.chat_history:
     st.chat_message(msg["role"]).write(msg["content"])
