@@ -407,12 +407,16 @@ for msg in st.session_state.chat_history:
 
 def convert_to_json(data):
     """Convert a string to a JSON object. If the string is not in valid JSON format, 
-    wrap it in a dictionary with the key 'AI'."""
+    wrap it in a dictionary with the key 'AI'. If the data is already a dictionary, return it as-is."""
+    if isinstance(data, dict):
+        return data
+
     try:
         return json.loads(data)
     except json.JSONDecodeError:
         # If not a valid JSON string, wrap it with the key 'AI'
         return {"AI": data}
+
 
 def parse_ai_response(response_data):
     logging.info("Response Data: %s", response_data)
