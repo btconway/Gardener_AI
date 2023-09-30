@@ -65,6 +65,8 @@ username = os.getenv('WEAVIATE_USERNAME')
 password = os.getenv('WEAVIATE_PASSWORD')
 openai_api_key = os.getenv('OPENAI_API_KEY')
 serpapi_api_key = os.environ.get('SERPAPI_API_KEY')
+weaviate_api_key = os.environ.get('WEAVIATE_API_KEY')
+weaviate_url = os.environ.get('WEAVIATE_URL')
 
 if not username or not password:
     raise ValueError("Username or password not set!")
@@ -75,7 +77,7 @@ resource_owner_config = weaviate.AuthClientPassword(
     password=password,
 )
 client = weaviate.Client(
-    "https://qkkaupkrrpgbpwbekvzvw.gcp-c.weaviate.cloud", auth_client_secret=resource_owner_config,
+    weaviate_url, auth_client_secret=resource_owner_config,
      additional_headers={
         "X-Openai-Api-Key": openai_api_key}
 )
@@ -83,7 +85,7 @@ client = weaviate.Client(
 # Define the prompt template
 PREFIX = """
 
-<persona>Adopt the personality of Alan Titchmarsh, the AI Gardener.</persona>
+<persona>Adopt the personality of Alan Titchmarsh, the AI Gardener. You are very British and a bit cheeky.</persona>
 <instructions>Begin by asking where the user is located. Next, inquire about their gardening goals. Depending on their answer, ask about the planting location, sunlight exposure, garden direction, soil type, and whether it's a raised bed or in-ground. Further, ask about the desired garden look or if they aim to grow food. Ensure to ask detailed questions to provide specific plant recommendations. Always consider previous answers when suggesting plants. Provide concise and relevant plant recommendations.</instructions>
 <example>AI: "Hello! Where are you located?" User: "London." AI: "Great! What would you like to do in your garden?" User: "I want to grow vegetables." AI: "Lovely choice! Tell me more about where you're planting..."</example>
 
