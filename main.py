@@ -333,7 +333,7 @@ class PlantReferenceQueryTool(BaseTool):
     ) -> dict:
         results = []  # Initialize an empty list to store the results
         try:
-            weaviate_query = prompt
+            weaviate_query = query
             logging.info("weaviate_query: " + weaviate_query)
             if weaviate_query is not None:
                 nearText = {"concepts": [weaviate_query]}  # Search for each concept individually
