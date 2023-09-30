@@ -336,7 +336,7 @@ class PlantReferenceQueryTool(BaseTool):
             if weaviate_query is not None:
                 concept = weaviate_query  # Split the query into individual concepts
                 nearText = {"concepts": [concept]}  # Search for each concept individually
-                resp = client.query.get(class_name, ["content"]).with_near_text(nearText).with_limit(5).do()
+                resp = client.query.get(class_name, ["text"]).with_near_text(nearText).with_limit(5).do()
                 resp = self.truncate_response(resp)  # Truncate the response if it exceeds 3000 characters
                 results.append(resp)
                 logging.info(resp)  # Changed from print to logging.info
